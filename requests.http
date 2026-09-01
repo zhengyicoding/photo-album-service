@@ -1,0 +1,21 @@
+### POST
+POST http://localhost:8080/albums
+Content-Type: application/json
+
+{
+  "name": "Vacation"
+}
+
+### GET
+GET http://localhost:8080/albums
+
+### Post another
+POST http://localhost:8080/albums
+Content-Type: application/json
+
+{
+  "name": "Family"
+}
+
+### GET by UUID
+GET http://localhost:8080/albums/7d30fc90-0545-4175-8885-85f0380a2e66
