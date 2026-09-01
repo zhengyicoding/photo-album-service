@@ -21,10 +21,14 @@ public class AlbumController {
   }
 
   @PostMapping
-  public ResponseEntity<Album> createAlbum(@RequestBody CreateAlbumRequest request) {
+  public ResponseEntity<Album> createAlbum(
+      @RequestBody CreateAlbumRequest request
+  ) {
     Album album = albumService.createAlbum(request.name());
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(album);
+    return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(album);
   }
 
   @GetMapping
@@ -33,7 +37,7 @@ public class AlbumController {
   }
 
   @GetMapping("/{id}")
- public ResponseEntity<Album> getAlbum(@PathVariable String id) {
+  public ResponseEntity<Album> getAlbum(@PathVariable String id) {
     Album album = albumService.getAlbum(id);
 
     if (album == null) {
