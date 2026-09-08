@@ -1,21 +1,41 @@
-### POST
-POST http://localhost:8080/albums
+#### POST
+#POST http://localhost:8080/albums
+#Content-Type: application/json
+#
+#{
+#  "name": "Vacation"
+#}
+#
+#### GET
+#GET http://localhost:8080/albums
+#
+#### Post another
+#POST http://localhost:8080/albums
+#Content-Type: application/json
+#
+#{
+#  "name": "Family"
+#}
+#
+#### GET by UUID
+#GET http://localhost:8080/albums/7d30fc90-0545-4175-8885-85f0380a2e66
+
+### Create Alice
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "alice@example.com"
+}
+
+### 6fbc5620-7c53-47d2-bc94-26a169e71d6b
+
+### Alice Vacation
+POST http://localhost:8080/users/6fbc5620-7c53-47d2-bc94-26a169e71d6b/albums
 Content-Type: application/json
 
 {
   "name": "Vacation"
 }
 
-### GET
-GET http://localhost:8080/albums
 
-### Post another
-POST http://localhost:8080/albums
-Content-Type: application/json
-
-{
-  "name": "Family"
-}
-
-### GET by UUID
-GET http://localhost:8080/albums/7d30fc90-0545-4175-8885-85f0380a2e66

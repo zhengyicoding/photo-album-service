@@ -1,7 +1,9 @@
 package com.example.photoalbum.service;
 
 import com.example.photoalbum.model.Album;
+import com.example.photoalbum.model.User;
 import com.example.photoalbum.repository.AlbumRepository;
+import com.example.photoalbum.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 //import java.util.ArrayList;
@@ -33,22 +35,38 @@ import java.util.UUID;
 @Service
 public class AlbumService {
   private final AlbumRepository albumRepository;
+  private final UserRepository userRepository;
 
-  public AlbumService(AlbumRepository albumRepository) {
+  public AlbumService(
+      AlbumRepository albumRepository,
+      UserRepository userRepository) {
     this.albumRepository = albumRepository;
+    this.userRepository = userRepository;
   }
 
-  public Album createAlbum(String name) {
-    String id = UUID.randomUUID().toString();
-    Album album = new Album(id, name);
+  public Album createAlbum(
+      String userId,
+      String name) {
+    User user =
+        userRepository
+            .findById(userId)
+            .orElseThrow(() ->
+                new RuntimeException("User not found"));
+    if (albumRepository.existsByUser_IdAndName(userId, name)) {
+      throw new RuntimeException(
+          "Album name already exists"
+      );
+    }
+    String albumId = UUID.randomUUID().toString();
+    Album album = new Album(albumId, name, user);
     return albumRepository.save(album);
   }
 
-  public List<Album> getAllAlbums() {
-    return albumRepository.findAll();
+  public List<Album> getAllAlbums(String userId) {
+    return albumRepository.findAllByUser_Id(userId);
   }
 
-  public Album getAlbum(String id) {
-    return albumRepository.findById(id).orElse(null);
+  public Album getAlbum(String userId, String albumId) {
+    return albumRepository.findByIdAndUser_Id(albumId, userId).orElse(null);
   }
 }

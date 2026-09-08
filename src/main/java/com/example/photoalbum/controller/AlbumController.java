@@ -4,6 +4,7 @@ import com.example.photoalbum.dto.CreateAlbumRequest;
 import com.example.photoalbum.model.Album;
 import com.example.photoalbum.service.AlbumService;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/albums")
+@RequestMapping("users/{userId}/albums")
 public class AlbumController {
 
   private final AlbumService albumService;
@@ -22,9 +23,10 @@ public class AlbumController {
 
   @PostMapping
   public ResponseEntity<Album> createAlbum(
+      @PathVariable String userId,
       @RequestBody CreateAlbumRequest request
   ) {
-    Album album = albumService.createAlbum(request.name());
+    Album album = albumService.createAlbum(userId, request.name());
 
     return ResponseEntity
         .status(HttpStatus.CREATED)
@@ -32,19 +34,20 @@ public class AlbumController {
   }
 
   @GetMapping
-  public List<Album> getAllAlbums() {
-    return albumService.getAllAlbums();
+  public List<Album> getAllAlbums(
+      @PathVariable String userId
+  ) {
+    return albumService.getAllAlbums(userId);
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<Album> getAlbum(@PathVariable String id) {
-    Album album = albumService.getAlbum(id);
-
+  @GetMapping("/{albumId}")
+  public ResponseEntity<Album> getAlbum(
+      @PathVariable String userId,
+      @PathVariable String albumId) {
+    Album album = albumService.getAlbum(userId, albumId);
     if (album == null) {
       return ResponseEntity.notFound().build();
     }
-
     return ResponseEntity.ok(album);
   }
-
 }
