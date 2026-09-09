@@ -1,5 +1,7 @@
 package com.example.photoalbum.service;
 
+import com.example.photoalbum.exception.AlbumAlreadyExistsException;
+import com.example.photoalbum.exception.UserNotFoundException;
 import com.example.photoalbum.model.Album;
 import com.example.photoalbum.model.User;
 import com.example.photoalbum.repository.AlbumRepository;
@@ -51,11 +53,9 @@ public class AlbumService {
         userRepository
             .findById(userId)
             .orElseThrow(() ->
-                new RuntimeException("User not found"));
+                new UserNotFoundException("User not found" + userId));
     if (albumRepository.existsByUser_IdAndName(userId, name)) {
-      throw new RuntimeException(
-          "Album name already exists"
-      );
+      throw new AlbumAlreadyExistsException("Album name already exists");
     }
     String albumId = UUID.randomUUID().toString();
     Album album = new Album(albumId, name, user);
