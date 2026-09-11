@@ -4,10 +4,10 @@ import com.example.photoalbum.dto.CreateAlbumRequest;
 import com.example.photoalbum.model.Album;
 import com.example.photoalbum.service.AlbumService;
 
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class AlbumController {
   @PostMapping
   public ResponseEntity<Album> createAlbum(
       @PathVariable String userId,
-      @RequestBody CreateAlbumRequest request
+      @Valid @RequestBody CreateAlbumRequest request
   ) {
     Album album = albumService.createAlbum(userId, request.name());
 

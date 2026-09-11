@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -19,7 +20,7 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<User> createUser(
-      @RequestBody CreateUserRequest request) {
+      @Valid @RequestBody CreateUserRequest request) {
     User user = userService.createUser(request.email());
 
     return ResponseEntity.status(HttpStatus.CREATED).body(user);

@@ -25,13 +25,22 @@ POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-  "email": "alice@example.com"
+  "email": "alice2@example.com"
 }
 
 ### 6fbc5620-7c53-47d2-bc94-26a169e71d6b
 
 ### Alice Vacation
 POST http://localhost:8080/users/6fbc5620-7c53-47d2-bc94-26a169e71d6b/albums
+Content-Type: application/json
+
+{
+  "name": "Vacation"
+}
+
+### 8d9e3e01-7e32-46a5-9362-8dc15b88ad53
+### Alice2 Vacation
+POST http://localhost:8080/users/8d9e3e01-7e32-46a5-9362-8dc15b88ad53/albums
 Content-Type: application/json
 
 {

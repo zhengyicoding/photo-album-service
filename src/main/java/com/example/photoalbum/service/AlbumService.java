@@ -55,7 +55,7 @@ public class AlbumService {
             .orElseThrow(() ->
                 new UserNotFoundException("User not found" + userId));
     if (albumRepository.existsByUser_IdAndName(userId, name)) {
-      throw new AlbumAlreadyExistsException("Album name already exists");
+      throw new AlbumAlreadyExistsException("Album name already exists: " + name);
     }
     String albumId = UUID.randomUUID().toString();
     Album album = new Album(albumId, name, user);
@@ -63,10 +63,16 @@ public class AlbumService {
   }
 
   public List<Album> getAllAlbums(String userId) {
+    if (!userRepository.existsById(userId)) {
+      throw new UserNotFoundException("User not found: " + userId);
+    }
     return albumRepository.findAllByUser_Id(userId);
   }
 
   public Album getAlbum(String userId, String albumId) {
+    if (!userRepository.existsById(userId)) {
+      throw new UserNotFoundException("User not found: " + userId);
+    }
     return albumRepository.findByIdAndUser_Id(albumId, userId).orElse(null);
   }
 }
