@@ -20,7 +20,66 @@
 #### GET by UUID
 #GET http://localhost:8080/albums/7d30fc90-0545-4175-8885-85f0380a2e66
 
-### Create Alice
+### Create Alice - 1. POST /users with valid new email; 2. POST /users with duplicate email
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "alice@example.com"
+}
+
+### 201 13e49301-fec7-4c65-8e3d-a56d96dd1ff4
+### 409   "error": "USER_ALREADY_EXISTS",
+###  "message": "User already exists: alice@example.com"
+
+### Create Bob - 1. POST /users with invalid new email
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "bob.com"
+}
+
+### 400 "error": "Bad Request"
+
+### Alice Vacation - 1. valid new album; 2. same user's duplicate album
+POST http://localhost:8080/users/13e49301-fec7-4c65-8e3d-a56d96dd1ff4/albums
+Content-Type: application/json
+
+{
+  "name": "Vacation"
+}
+
+### 201 "id": "7e08893d-59b2-4812-a7f3-7159aa5a3d78"
+
+### Unknown user - get albums
+GET http://localhost:8080/users/does-not-exist/albums
+
+### 404 "error": "USER_NOT_FOUND"
+### "message": "User not found: does-not-exist"
+
+### Create album for unknown user
+POST http://localhost:8080/users/does-not-exist/albums
+Content-Type: application/json
+
+{
+  "name": "Vacation"
+}
+
+### 404 "error": "USER_NOT_FOUND"
+### "message": "User not found: does-not-exist"
+
+### blank album name
+POST http://localhost:8080/users/13e49301-fec7-4c65-8e3d-a56d96dd1ff4/albums
+Content-Type: application/json
+
+{
+  "name": ""
+}
+
+### 400 "error": "Bad Request"
+
+### Create Alice2
 POST http://localhost:8080/users
 Content-Type: application/json
 
@@ -28,23 +87,16 @@ Content-Type: application/json
   "email": "alice2@example.com"
 }
 
-### 6fbc5620-7c53-47d2-bc94-26a169e71d6b
+### 201 a863b6a6-0b97-4d5e-a28a-e574e1e0bb57
 
-### Alice Vacation
-POST http://localhost:8080/users/6fbc5620-7c53-47d2-bc94-26a169e71d6b/albums
+### Alice2 Vacation - different user + same album name
+POST http://localhost:8080/users/a863b6a6-0b97-4d5e-a28a-e574e1e0bb57/albums
 Content-Type: application/json
 
 {
   "name": "Vacation"
 }
 
-### 8d9e3e01-7e32-46a5-9362-8dc15b88ad53
-### Alice2 Vacation
-POST http://localhost:8080/users/8d9e3e01-7e32-46a5-9362-8dc15b88ad53/albums
-Content-Type: application/json
-
-{
-  "name": "Vacation"
-}
+### 201, "id": "a863b6a6-0b97-4d5e-a28a-e574e1e0bb57"
 
 
